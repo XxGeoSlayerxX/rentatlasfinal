@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="/media/circle.png" type="image/png" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="css/style.css" />
+  <title>About — RentAtlas</title>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;">
+      <h1 class="logo" style="margin:0;"><a href="index.html" style="text-decoration:none;color:inherit">RentAtlas</a></h1>
+      <nav aria-label="primary">
+        <ul class="nav" style="display:flex;gap:12px;list-style:none;margin:0;padding:0">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="map.html">Map</a></li>
+          <li><a class="active" href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="max-width:1000px;margin:28px auto;padding:0 18px;">
+    <section class="hero" style="background:linear-gradient(180deg,#0f172a 0%, #0b1220 100%);color:#fff;padding:36px;border-radius:10px;margin-bottom:18px;">
+      <div class="hero-text">
+        <h1 style="margin:0 0 6px 0">About RentAtlas</h1>
+        <p style="margin:0;opacity:0.95">A clear, iterative and reproducible project to help renters compare Montréal neighbourhoods using safety, parks & amenities, transit access and parking. Below I explain how the site was made, the data used, and known limitations so you can understand how the results were obtained.</p>
+      </div>
+    </section>
+
+    <section style="background:#fff;padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(10,10,20,0.04);margin-bottom:14px;">
+      <h2 style="margin-top:0">How this site was built</h2>
+      <p class="small">This site is a lightweight front-end (HTML/CSS/Leaflet/JS) that reads precomputed GeoJSON (FSA geometries with each component's score). The data processing and score calculations are performed in Jupyter notebooks using mainly geopandas, pandas and NumPy.</p>
+
+           <h3>Index Breakdown</h3>
+     <ol class="large index-list">
+        <li><strong>Safety - Crime Index</strong> This index was mainly computed using SPVM's open data, calculated per capita, for each FSA, in its geographical area. A calculation for proximity to firehouses was also added at a lower weight, to evaluate emergency response times. </li>
+        <li><strong>Parks - Amenities Index</strong> This index uses Montreal's main public parks database. For each FSA, it measures the number of parks within its bounds, the percent area of the FSA that they collectively take, and a graduated evaluation of the proximity of the FSA's centroid to the nearest park. It also utilizes a federally provided 'Canopy' overaly, measuring greenary coverage over each FSA, again calculating for percentage of land coverage: this was particularly helpful for bouroughs outside of the city proper (mising park data), and to demonstrate the suburbs have overall greenery despite lower dedicated parks. There is also a factor that involves public pools, again using similar techniques as the parks grading scheme.</li>
+        <li><strong>Transit Access Index</strong> This index evaluates the public transit stop density per FSA, proximity to each, as well as special proximity weighting for Metro stations on the network, since they are obviously more sought after (similar to Park again).</li>
+        <li><strong>Parking Index</strong> This index measures the availability of street parking spots, per capita, in order to give a rough estimate of how easily parking can be found on those streets. Suburbs are mostly excluded form this dataset, which unfortunately limits the accuracy of this index in those areas. For this reason Parking Index is not weighed as much on default.</li>
+      </ol>
+
+      <h3>Processing steps (summary)</h3>
+      <ol class="small">
+        <li>Collecting raw data: FSA geographic and general data, crime incidents, park database, public transit stops, parking spaces registries and other secondary data sources. Ideally there would also be price, walkshed (or simply walkability) and job opportunities</li>
+        <li>Normalize spatial data to FSAs, for each dataset (spatial-joins, area-weighted where appropriate).</li>
+        <li>Compute per-FSA metrics: per-capita parking, transit stops per 1,000 residents, parks area per capita, crime rate per 1,000 residents, etc.</li>
+        <li>Apply transformations to limit outlier impact (although still present for places like Mont-Royal Park getting a full 1.0 score on greenery) and normalize distributions.</li>
+        <li>Scale transformed metrics to 0..1 (min-max) or percentile rank depending on the indicator.</li>
+        <li>Combine component scores with user-adjustable weights to compute the overall score exported to the master FSA GeoJSON, which is then the source of all displayed data on the active map.</li>
+      </ol>
+    </section>
+
+    <section style="background:#fff;padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(10,10,20,0.04);margin-bottom:14px;">
+      <h2 style="margin-top:0">Known issues & limitations</h2>
+      <p class="small"><strong>Projection / geometry mismatches:</strong> mixing sources with different coordinate reference systems requires reprojection — mistakes here can have been made which distorts areas and densities.</p>
+      <p class="small"><strong>Sparse or small-population FSAs:</strong> per-1000 metrics can be unstable for FSAs with tiny populations. Small denominators can create inflated rates.</p>
+      <p class="small"><strong>Temporal mismatch:</strong> datasets are from different years (ex: 2019 transit vs 2022 crime), so the combined score is not guaranteed to reflect a single point in time.</p>
+      <p class="small"><strong>Parking assumptions:</strong> The parking index aggregates different parking types (permit, paid, free) using simplifying rules. Local variances (temporary parking bans, private lots) aren’t fully captured, and are much beyond the scope of this single project.</p>
+      <p class="small"><strong>Aggregation decisions:</strong> how point data (stops, incidents) are aggregated to FSAs affects results: simple counts, per capita rates, and spatial weighting all give slightly different outcomes.</p>
+      <p class="small">These stated limitations above mean the map should be used for exploratory comparison rather than as an authoritative decision maker. When possible verify with local knowledge and cross-reference when the logic isnt adding up.</p>
+    </section>
+
+    <section style="background:#fff;padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(10,10,20,0.04);margin-bottom:14px;">
+      <h2 style="margin-top:0">Reproducibility and code</h2>
+      <p class="small">All processing steps should be in the repo. Here are some key points to reproduce the pipeline:</p>
+      <ul class="small">
+        <li>Install dependencies: geopandas, pandas, numpy, shapely, rasterio (and more if needed).</li>
+        <li>Run the notebooks that download/clean each source, then an aggregation notebook that creates the per-FSA CSV and GeoJSON</li>
+        <li>Export the final file to data/processed/fsa_master.geojson, since it is used by the rest of the front end provided</li>
+      </ul>
+    </section>
+
+    <section style="background:#fff;padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(10,10,20,0.04);margin-bottom:14px;">
+      <h2 style="margin-top:0">What I learned and main issues encountered</h2>
+      <ul class="small">
+        <li><strong>Data cleaning is the majority of the work:</strong> missing attributes, inconsistent column names, and duplicated records required careful cleaning and plenty of trial and error.</li>
+        <li><strong>Edge cases matter:</strong> industrial FSAs or very small islands around Montreal distort spatial averages and required manual exclusions or separate handling.</li>
+        <li><strong>Transformations help:</strong> using log1p on outlier-heavy stats made the choropleth more informative than raw counts, particularly for my parks and transit layers.</li>
+        <li><strong>Normalization choices change ranking:</strong> min-max scaling vs percentile ranking produce different spreads. Percentile ranking gives a uniform distribution and is more 'fair' in handling extreme outliers.</li>
+        <li><strong>Performance:</strong> large GeoJSONs slow the browser down a lot. Strategies included simplifying geometries and other AI suggestions.</li>
+      </ul>
+    </section>
+
+    <section style="background:#fff;padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(10,10,20,0.04);margin-bottom:18px;">
+      <h2 style="margin-top:0">How you can help and contribute</h2>
+      <p class="small">If you find better data sources, notice a bug or want to improve the scoring methodology, let me know by email. Useful contributions include:</p>
+      <ul class="small">
+        <li>Improved parking datasets or municipal permit rules</li>
+        <li>Walkshed, employment or price info</li>
+        <li>Performance improvements for the front-end GeoJSON</li>
+        <li>Help integrating and marketing to Kijiji, Marketplace or other rental platforms that could use such a decision tool</li>
+      </ul>
+      <p class="small">Contact: XxGeoSlayerxX on GitHub or email at t_coull@live.concordia.ca</p>
+    </section>
+
+    <footer style="margin-top:18px;color:#666" class="small">
+      <p>© 2026 RentAtlas — Prototype project. Data sources and methodology are documented in the repository.</p>
+    </footer>
+  </main>
+</body>
+</html>

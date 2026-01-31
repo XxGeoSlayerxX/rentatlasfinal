@@ -1,0 +1,319 @@
+/* small additions for map.html; keep same look as index.css */
+body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+.container { max-width:1100px; margin:0 auto; padding:0 12px; }
+.site-header { background:#111827; color:#fff; padding:10px 0; }
+.site-header .logo a { color:#fff; text-decoration:none; font-size:1.2rem; }
+.map-container { display:flex; gap:16px; padding:16px 0; }
+.map-sidebar { width:300px; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #e5e7eb; }
+.map-view { flex:1; }
+.site-footer { background:#111827; color:#9ca3af; padding:12px 0; text-align:center; margin-top:16px; }
+.nav { list-style:none; padding:0; margin:0; display:flex; gap:12px; }
+.nav a { color:#fff; text-decoration:none; }
+.leaflet-tooltip.fsa-tooltip {
+  background: rgba(255,255,255,0.95);
+  color: #111;
+  border: 1px solid #bbb;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  padding: 4px 6px;
+  font-weight: 600;
+  border-radius: 3px;
+}
+/* Map page visuals / responsive layout improvements */
+
+.map-page {
+  display: grid;
+  grid-template-columns: 360px 1fr; /* wider sidebar */
+  gap: 1rem;
+  align-items: start;
+  padding: 1rem;
+}
+
+#sidebar {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 6px 18px rgba(20,20,30,0.06);
+  height: calc(100vh - 120px); /* sticky-ish full height */
+  overflow: auto;
+  position: sticky;
+  top: 16px;
+}
+
+/* Map container styling */
+#map-section { display: flex; align-items: stretch; }
+#map {
+  width: 100%;
+  height: calc(100vh - 120px); /* fill vertically under header */
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(20,20,30,0.08);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+
+
+}
+
+/* small screens: stack layout */
+@media (max-width: 900px) {
+  .map-page { grid-template-columns: 1fr; padding: 12px; }
+  #sidebar { position: relative; height: auto; }
+  #map { height: 70vh; }
+  .map-collapsed .map-page { grid-template-columns: 1fr; } /* don't collapse on mobile */
+}
+
+/* Tooltip style (keep if not yet added) */
+.leaflet-tooltip.fsa-tooltip {
+  background: rgba(255,255,255,0.98);
+  color: #111;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 5px 8px;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+/* Layout tweaks: make map bigger and cleaner */
+:root{
+  --sidebar-w: 220px; /* narrower sidebar -> larger map canvas */
+  --gutter: 18px;
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --radius: 10px;
+}
+
+/* Page layout when on the Map page */
+.map-page {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  gap: var(--gutter);
+  align-items: start;
+  padding: 1rem;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #111827;
+}
+
+/* Sidebar styles (narrower, taller, scrollable) */
+#sidebar {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid #e6e6e9;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+  height: calc(100vh - 110px);
+  overflow: auto;
+  position: sticky;
+  top: 16px;
+}
+
+/* Map container: fill remaining space with larger height */
+#map-section { display: flex; align-items: stretch; }
+#map {
+  width: 100%;
+  /* larger, more immersive map */
+  height: calc(100vh - 110px);
+  border-radius: var(--radius);
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Controls visual polish */
+.control { margin-bottom: 10px; }
+.control label { display: block; font-weight: 600; color: #111827; margin-bottom:6px; }
+.control input[type=range] { width:100%; }
+.control-btn {
+  display: inline-block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background:#f3f4f6;
+  border:1px solid #e5e7eb;
+  cursor:pointer;
+  font-weight:600;
+}
+.control-btn.active { background:#111827; color:#fff; border-color:transparent; }
+.small { font-size:0.9rem; color:var(--muted); }
+
+/* Legend tweaks */
+.info.legend { background: rgba(255,255,255,0.98); padding:15px; font-size: 1.3rem; border-radius:8px; border:1px solid #e5e7eb; box-shadow:0 6px 18px rgba(10,10,15,0.04); }
+
+/* tooltip style (keeps nice look) */
+.leaflet-tooltip.fsa-tooltip {
+  background: rgba(255,255,255,0.98);
+  color: #111;
+  border: 1px solid #e0e3e7;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  padding: 6px 8px;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+/* Responsive: collapse to single column earlier for small screens */
+@media (max-width: 920px) {
+  .map-page { grid-template-columns: 1fr; padding: 12px; }
+  #sidebar { position: relative; height: auto; order: 2; }
+  #map { height: 68vh; order: 1; }
+}
+
+/* Small visual niceties for landing page hero (index.html) */
+.hero {
+  display:flex; align-items:center; gap:24px;
+  padding:48px 24px;
+  background: linear-gradient(180deg,#0f172a 0%, #0b1220 100%);
+  color: #fff;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+.hero .hero-text { max-width:780px; }
+.hero h1 { font-size:2.25rem; margin:0 0 8px 0; line-height:1.05; }
+.hero p { margin:0; opacity:0.92; font-size:1.05rem; }
+
+/* CTA button */
+.btn-cta {
+  display:inline-block; padding:12px 18px; background:#06b6d4; color:#032; border-radius:10px; font-weight:700; text-decoration:none;
+  box-shadow: 0 8px 18px rgba(2,132,199,0.12);
+}
+/* ---------- Fluid layout: no horizontal scroll, keep sidebar visible ---------- */
+
+/* global box sizing so padding doesn't cause overflow */
+html, body, *, *::before, *::after { box-sizing: border-box; }
+
+/* ensure body doesn't produce horizontal scroll from margins */
+body { margin: 0; min-width: 0; }
+
+/* make .container fluid for map page only (safe override) */
+main.container.map-page,
+main.container.map-page .container {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0;
+  padding: 12px 20px;
+}
+
+/* Grid: keep sidebar at a reasonable width but allow map to shrink gracefully */
+.map-page {
+  display: grid;
+  /* sidebar flexible but bounded, map takes remaining space and can shrink */
+  grid-template-columns: minmax(220px, 340px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 12px;
+}
+
+/* Ensure map column never forces horizontal scroll; minmax(0,1fr) is key */
+#map-section { display: flex; align-items: stretch; min-width: 0; }
+#map {
+  width: 100%;
+  height: calc(100vh - 110px);
+  min-height: 520px;
+  min-width: 0; /* prevents children from forcing horizontal scroll */
+}
+
+/* Make controls and panels wrap instead of forcing width */
+#sidebar, .sidebar-content, .control, .control small, .control-btn {
+  min-width: 0;
+  word-break: break-word;
+}
+
+/* Responsive adjustments (narrow screens keep stacked layout) */
+@media (max-width: 920px) {
+  .map-page { grid-template-columns: 1fr; padding: 10px; }
+  #sidebar { order: 2; width: 100%; height: auto; position: relative; }
+  #map { order: 1; height: 64vh; min-height: 420px; }
+}
+
+/* Hide any accidental overflow from leaflet controls (keeps them inside map) */
+.leaflet-control-container { overflow: visible; }
+
+/* final safety: prevent overall horizontal scroll */
+html, body { overflow-x: hidden; }
+
+/* Adding a tweak to the Overall Score button, I want it to pop more. 1st try sucked. 2nd try*/
+/* Make only the "Overall score" control noticeably larger & bolder */
+button.control-btn[data-prop="overall_score"] {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;       /* bigger hit target */
+  font-size: 1.12rem;       /* larger text */
+  font-weight: 800;         /* bolder */
+  border-radius: 8px;
+  background: #ffffff;      /* keep it clean */
+  border: 1px solid #c9cfd6;
+  color: #0f172a;
+  box-shadow: none;         /* no poppy shadow */
+}
+
+/* Slight visual feedback when it's the active selection (no popping) */
+button.control-btn[data-prop="overall_score"].active {
+  border-color: #9aa3ab;
+  background: #f6f7f9;
+}
+/* Make "Overall score" use the same dark active style as other active controls */
+button.control-btn[data-prop="overall_score"].active {
+  background: #111827;
+  color: #fff;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+
+/* Testing this out, probs will delete. Yep did delete */
+/* try again */
+
+/* Small spacing and title emphasis for About -> Index Breakdown */
+.index-list {
+  padding-left: 1.2rem; /* keep list indent */
+}
+.index-list li {
+  margin-bottom: 1rem;           /* extra space between items */
+  line-height: 1.45;
+  color: #374151;                /* slightly muted body text */
+}
+.index-list li strong {
+  display: inline-block;         /* keeps the title inline but helps spacing */
+  margin-right: 0.45rem;
+  font-weight: 700;
+  color: #0f172a;                /* darker title color */
+}
+
+/* Home thingy */
+/* no good.. */
+/* no good again */
+/* Fix: keep header/nav at normal size, increase only page content on homepage */
+
+/* Ensure the top bar (header, logo, nav links) stays its original size */
+header.site-header,
+header.site-header .container,
+header.site-header .logo,
+header.site-header .nav,
+header.site-header .nav a {
+  font-size: 16px !important;    /* explicit so header doesn't inherit the larger body size */
+  line-height: 1.2 !important;
+}
+
+/* Increase body copy and hero text only on the homepage */
+body.home main,
+body.home main p,
+body.home .hero p,
+body.home .small,
+body.home .grid article p,
+body.home .hero-text,
+body.home .hero-text p {
+  font-size: 18px;               /* adjust to taste: 17/18/19px */
+  line-height: 1.6;
+}
+
+/* Slightly larger hero heading but keep it proportional */
+body.home .hero h1 {
+  font-size: 2rem;               /* ~32px on 16px base; bump if you want bigger */
+  line-height: 1.08;
+}
+
+/* CTA sizing tuned to the new copy size */
+body.home .btn-cta {
+  font-size: 1rem;
+  padding: 12px 18px;
+}
+
+
+/* trying to overwrite the white colour */
+/* I give up */

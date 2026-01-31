@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="./media/circle.png?v=2" type="image/png"> 
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"> 
+  <link rel="apple-touch-icon" sizes="180x180" href="./media/apple-touch-icon.png"> <meta name="theme-color" content="#0f172a">
+  <title>RentAtlas · Map</title>
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Minimal extra styles for the map page */
+    .map-page { display: grid; grid-template-columns: 320px 1fr; gap: 1rem; padding: 1rem; }
+    #sidebar { background:#fff; padding:0.8rem; border-radius:6px; border:1px solid #e5e7eb; }
+    #map { height: 80vh; border-radius:6px; }
+    .small { font-size:0.9rem; color:#555; }
+    .control-btn { display:block; margin:6px 0; padding:6px 8px; border-radius:6px; background:#f3f4f6; cursor:pointer; border:1px solid #ddd; }
+    .control-btn.active { background:#111827; color:white; }
+  </style>
+</head>
+<body>
+
+    <header class="site-header">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;">
+      <h1 class="logo" style="margin:0;"><a href="index.html" style="text-decoration:none;color:inherit">RentAtlas</a></h1>
+      <nav aria-label="primary">
+        <ul class="nav" style="display:flex;gap:12px;list-style:none;margin:0;padding:0">
+          <li><a class="active" href="index.html">Home</a></li>
+          <li><a href="map.html">Map</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+    </header>
+
+  <main class="container map-page">
+    <aside id="sidebar">
+      <h2>The RentAtlas</h2>
+      <p class="small">Use the buttons below to change the choropleth. Then use the sliders to really customize your the search to your specific needs.</p>
+
+      <h3>Color by</h3>
+      <button class="control-btn active" data-prop="overall_score">Overall score</button>
+      <button class="control-btn" data-prop="crime_score">Safety (crime)</button>
+      <button class="control-btn" data-prop="parks_score">Parks / amenities</button>
+      <button class="control-btn" data-prop="transit_score">Transit access</button>
+      <button class="control-btn" data-prop="parking_score">Parking</button>
+
+      <!-- Add these slider controls inside the map.html sidebar (e.g., under "Color by") -->
+      <h3>Weight factors (live)</h3>
+      <div class="control small">
+        <label for="w_safety">Safety</label>
+        <input id="w_safety" type="range" min="0" max="100" value="35" />
+        <span id="w_safety_val">35</span>%
+      </div>
+
+      <div class="control small">
+        <label for="w_parks">Parks / Amenities</label>
+        <input id="w_parks" type="range" min="0" max="100" value="30" />
+        <span id="w_parks_val">30</span>%
+      </div>
+
+      <div class="control small">
+        <label for="w_transit">Transit</label>
+        <input id="w_transit" type="range" min="0" max="100" value="25" />
+        <span id="w_transit_val">25</span>%
+      </div>
+
+      <div class="control small">
+        <label for="w_parking">Parking</label>
+        <input id="w_parking" type="range" min="0" max="100" value="10" />
+        <span id="w_parking_val">10</span>%
+      </div>
+      <div style="margin-top:0.4rem">
+        <!-- changed id and label from Apply -> Reset -->
+        <button id="resetWeights" class="control-btn">Reset filters</button>
+      <small class="small" style="display:block;margin-top:6px">Tip: drag sliders to adjust, map updates automatically when clicked on "Overall Score".</small>
+</div>
+        <!-- <div style="margin-top:0.4rem"> -->
+        <!-- <button id="applyWeights" class="control-btn">Apply weights</button> -->
+        <!-- <small class="small" style="display:block;margin-top:6px">Tip: drag sliders to adjust, map updates automatically .</small> -->
+      </div>
+
+      <hr/>
+      <h3>Top matches</h3>
+      <ol id="top-list" class="small">
+        <li>Loading...</li>
+      </ol>
+
+      <p class="small" style="margin-top:0.6rem">
+        Note: Certain datasets are incomplete or misrepresented given Montreal's agglomeration fragmentation. Parking seems to be the most affected, since suburbs don't have paid street parking, and therefore don't register in the database.
+      </p>
+    </aside>
+
+    <section id="map-section">
+      <div id="map"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 RentAtlas — Prototype apartment neighbourhood finder for Montréal.</p>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin="">
+  </script>
+
+  <script src="js/map.js"></script>
+</body>
+</html>

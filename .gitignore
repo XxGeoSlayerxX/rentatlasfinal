@@ -1,0 +1,41 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# Editor
+.vscode/
+.DS_Store
+
+# Node
+node_modules/
+
+# Build / misc
+dist/
+build/
+*.log
+# Local virtual env
+.venv/
+
+# Large datasets / working data
+data/raw/
+data/processed/
+
+# Env files
+.env
+# Local virtual env
+.venv/
+
+# Large datasets / working data
+data/raw/
+data/processed/
+
+# Env / secrets
+.env
+
+# Editor
+.vscode/
+.DS_Store

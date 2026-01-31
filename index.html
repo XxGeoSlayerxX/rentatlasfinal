@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+ <!-- favicon (use absolute path so it's found from any page) -->
+  <!-- put these inside <head> -->
+  <link rel="icon" href="./media/circle.png?v=2" type="image/png"> 
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"> 
+  <link rel="apple-touch-icon" sizes="180x180" href="./media/apple-touch-icon.png"> <meta name="theme-color" content="#0f172a">
+  
+  <title>RentAtlas — Find better rental neighbourhoods</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="home"> 
+  <header class="site-header">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;">
+      <h1 class="logo" style="margin:0;"><a href="index.html" style="text-decoration:none;color:inherit">RentAtlas</a></h1>
+      <nav aria-label="primary">
+        <ul class="nav" style="display:flex;gap:12px;list-style:none;margin:0;padding:0">
+          <li><a class="active" href="index.html">Home</a></li>
+          <li><a href="map.html">Map</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="max-width:1100px;margin:28px auto;padding:0 18px;">
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Find the right neighbourhood, faster.</h1>
+        <p>RentAtlas helps renters compare neighbourhoods using safety, parks, transit access, and parking, all while tailoring the results to their priorities. Explore the interactive map with its sliders to discover areas that match what matters to you.</p>
+        <div style="margin-top:18px">
+          <a class="btn-cta" href="map.html">Open the RentAtlas</a>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center">
+        <!-- small illustrative SVG / placeholder -->
+        <img src="img/map-illustration.svg" alt="" style="max-width:320px;opacity:0.98" />
+      </div>
+    </section>
+
+    <section style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px">
+      <article style="background:#fff;padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(10,10,20,0.04)">
+        <h3 style="margin-top:0">Why this project</h3>
+        <p class="small">Finding a place to live is one of the most important decisions in life, and renters often make tradeoffs without clear information. RentAtlas consolidates public data into an intuitive map so you can quickly compare neighbourhoods by postal code for overall safety, greenery, transit access, ease of parking and hopefully much more very soon.</p>
+      </article>
+      <article style="background:#fff;padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(10,10,20,0.04)">
+        <h3 style="margin-top:0">How it helps</h3>
+        <p class="small">Adjust the sliders on the sidebar to prioritize what matters, like parking over transit, and the map updates instantly. Use the top matches to discover FSAs that better match your needs. (FSA's are forward sorting areas, or the first 3 digits of the postal code)</p>
+      </article>
+      <article style="background:#fff;padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(10,10,20,0.04)">
+        <h3 style="margin-top:0">Open data and made to improve</h3>
+        <p class="small">Data is prepared with Python notebooks and the processing steps are transparent so anyone can audit or improve the scores. In the future, live pricing can be implemented to each area in order to facilitate decision making. The goal is also to bring this to many more cities and serve more people.</p>
+      </article>
+    </section>
+
+    <section style="margin-top:20px">
+      <h2>Get started</h2>
+      <ol class="small">
+        <li>Open the interactive map and explore top matches.</li>
+        <li>Drag the sliders to reflect your priorities.</li>
+        <li>Click a neighbourhood to inspect the component contributions.</li>
+      </ol>
+    </section>
+
+      <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 RentAtlas — Prototype apartment neighbourhood finder for Montréal.</p>
+    </div>
+    <div class="container">
+      <p><a href="https://www.flaticon.com/free-icons/yellow" title="yellow icons">Yellow icons created by hqrloveq - Flaticon</a></p>
+    </div>
+  </footer>
+  </main>
+</body>
+</html>
